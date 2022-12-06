@@ -1,4 +1,4 @@
-name: Deploy app service
+name: Deploy app service for nodejs app
 on: workflow_dispatch
 
 env:
