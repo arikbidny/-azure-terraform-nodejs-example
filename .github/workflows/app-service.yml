@@ -1,0 +1,61 @@
+name: Deploy app service
+on: workflow_dispatch
+
+env:
+  NODE_VERSION: '14.x'
+  RESOURCE_GROUP: mtc-terraform-webapp-rg
+
+jobs:
+  deployResource:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@master
+      - name: Login to Azure
+        uses: Azure/login@v1.4.3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: List files
+        run: ls -la
+      - name: Instal Terraform
+        uses: hashicorp/setup-terraform@v1
+      - name: terraform init
+        run: terraform init
+      - name: terraform plan
+        run: terraform plan -no-color
+      - name: terraform apply
+        run: terraform apply -auto-approve
+  # buildAndDeployApp:
+  #   runs-on: ubuntu-latest
+  #   needs: deployResource
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@master
+  #     - name: Login to Azure
+  #       uses: Azure/login@v1.4.3
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         cache: 'npm'
+  #         cache-dependency-path: nodejs-docs-hello-world/package-lock.json
+  #     - name: npm install, build
+  #       working-directory: ./nodejs-docs-hello-world
+  #       run: |
+  #         npm install 
+  #         zip -r my-app.zip . 
+  #     - name: Deploy to webapp
+  #       working-directory: ./nodejs-docs-hello-world
+  #       # wapp-mtc-webapp-nodejs
+  #       run: |
+  #         ls -la
+  #         az webapp deployment source config-zip --resource-group ${{ env.RESOURCE_GROUP }} --name wapp-mtc-webapp-nodejs --src ./my-app.zip
+    
+
+    
+      # - name: Build bicep script
+      #   run: bicep build app-service-plan.bicep
+      # - name: Deploy bicep script
+      #   run: bicep deploy -g mtc-bicep-webapp-rg -n app-service-plan -l WestEurope app-service-plan.bicep
