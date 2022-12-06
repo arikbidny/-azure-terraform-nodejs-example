@@ -37,7 +37,7 @@ jobs:
   #       run: terraform apply -auto-approve
   buildApp:
     runs-on: ubuntu-latest
-    needs: deployResource
+    # needs: deployResource
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
