@@ -65,7 +65,7 @@ jobs:
       - name: Deploy to Azure
         working-directory: react-app/build
         run: |
-          az webapp deployment source config-zip --resource-group ${{ RESOURCE_GROUP }} --name wapp-mtc-webapp-terraform-nodejs --src release.zip
+          az webapp deployment source config-zip --resource-group ${{ env.RESOURCE_GROUP }} --name wapp-mtc-webapp-terraform-nodejs --src release.zip
       # - name: Upload artifact for deployment job
       #   uses: actions/upload-artifact@v2
       #   with:
